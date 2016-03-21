@@ -1,3 +1,7 @@
+/Debug
+*.vcxproj
+*.vcxproj.filters
+trial.cpp
 # Compiled Object files
 *.slo
 *.lo
