@@ -31,6 +31,7 @@ public:
 bool isEarlier(Process a, Process b);
 bool lessBurst(Process a, Process b);
 bool lessPrior(Process a, Process b);
+bool lessCpuBurst(Process a, Process b);
 
 
 

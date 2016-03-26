@@ -93,3 +93,9 @@ bool lessPrior(Process a,Process b)
      else return false;
 
 }
+bool lessCpuBurst(Process a, Process b)
+{
+   if(a.get_burst()<b.get_burst()) return true;
+     else return false;
+
+}
