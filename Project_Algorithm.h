@@ -36,7 +36,6 @@ void Priority_Preemptive(list<Process>buffer,list<Process>executing)
             while(iBuffer->get_arrival()<=clock&&iBuffer!=buffer.end())
             {
             waiting.push_back(*iBuffer);
-            waiting.sort(lessPrior);
             iBuffer++;
             }
             if(waiting.empty()&&iBuffer->get_arrival()>clock)
