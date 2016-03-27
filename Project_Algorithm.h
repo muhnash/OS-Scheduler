@@ -20,6 +20,7 @@ void Priority_Preemptive(list<Process>buffer,list<Process>executing)
     list<Process>::iterator iBuffer;
     list<Process>::iterator iExecuting;
     int clock=0;
+    Process p1("GAP",clock,0);
     iBuffer=buffer.begin();
     iExecuting=executing.begin();
 
@@ -41,10 +42,23 @@ void Priority_Preemptive(list<Process>buffer,list<Process>executing)
             if(waiting.empty()&&iBuffer->get_arrival()>clock)
             {
 
-              Process p1("GAP",clock,0);
-              p1.set_priority(9999);
-              executing.push_back(p1);
-              iExecuting++;
+
+               if(clock==0||waiting.begin()->get_name()!=iExecuting->get_name())
+              {
+                p1.set_arrival(clock);
+                p1.set_priority(0);
+                p1.set_end_time(clock+1);
+                executing.push_back(p1);
+                iExecuting++;
+               }
+
+             else
+
+             {
+
+                 waiting.begin()->set_end_time(clock+1);
+                *iExecuting=*waiting.begin();
+             }
 
             }
 
@@ -102,7 +116,8 @@ void Priority_Non_Preemptive(list<Process>buffer,list<Process>executing)
     list<Process>::iterator iBuffer;
     list<Process>::iterator iExecuting;
     int clock=0;
-    bool flag=false;
+    Process p1("GAP",clock,0);
+
     Process temp("temp",0,0);
     iBuffer=buffer.begin();
     iExecuting=executing.begin();
@@ -145,12 +160,21 @@ void Priority_Non_Preemptive(list<Process>buffer,list<Process>executing)
 
             if(waiting.empty()&&iBuffer->get_arrival()>clock)
             {
+                if(clock==0||waiting.begin()->get_name()!=iExecuting->get_name())
+                {
 
-              flag=(true);
-              Process p1("GAP",clock,0);
-              p1.set_priority(9999);
-              executing.push_back(p1);
-              iExecuting++;
+                 p1.set_arrival(clock);
+                 p1.set_priority(0);
+                 executing.push_back(p1);
+                 iExecuting++;
+                 }
+                 else
+                 {
+
+                  waiting.begin()->set_end_time(clock+1);
+                 *iExecuting=*waiting.begin();
+
+                 }
 
             }
 
@@ -211,7 +235,7 @@ void First_Come_First_Served(list<Process>buffer,list<Process>executing)
     list<Process>::iterator iBuffer;
     list<Process>::iterator iExecuting;
     int clock=0;
-    bool flag=false;
+    Process p1("GAP",clock,0);
     Process temp("temp",0,0);
     iBuffer=buffer.begin();
     iExecuting=executing.begin();
@@ -254,13 +278,22 @@ void First_Come_First_Served(list<Process>buffer,list<Process>executing)
 
             if(waiting.empty()&&iBuffer->get_arrival()>clock)
             {
+               if(clock==0||waiting.begin()->get_name()!=iExecuting->get_name())
+              {
+                p1.set_arrival(clock);
+                p1.set_priority(0);
+                p1.set_end_time(clock+1);
+                executing.push_back(p1);
+                iExecuting++;
+               }
 
-              flag=(true);
-              Process p1("GAP",clock,0);
-              p1.set_priority(9999);
-              executing.push_back(p1);
-              iExecuting++;
+             else
 
+             {
+
+                 waiting.begin()->set_end_time(clock+1);
+                *iExecuting=*waiting.begin();
+             }
             }
 
         }
@@ -325,6 +358,7 @@ void Shortest_Job_First_Preemptive(list<Process>buffer,list<Process>executing)
     list<Process>::iterator iBuffer;
     list<Process>::iterator iExecuting;
     int clock=0;
+    Process p1("GAP",0,0);
     iBuffer=buffer.begin();
     iExecuting=executing.begin();
 
@@ -345,11 +379,22 @@ void Shortest_Job_First_Preemptive(list<Process>buffer,list<Process>executing)
             }
             if(waiting.empty()&&iBuffer->get_arrival()>clock)
             {
+              if(clock==0||waiting.begin()->get_name()!=iExecuting->get_name())
+              {
+                p1.set_arrival(clock);
+                p1.set_priority(0);
+                p1.set_end_time(clock+1);
+                executing.push_back(p1);
+                iExecuting++;
+               }
 
-              Process p1("GAP",clock,0);
-              p1.set_priority(9999);
-              executing.push_back(p1);
-              iExecuting++;
+             else
+
+             {
+
+                 waiting.begin()->set_end_time(clock+1);
+                *iExecuting=*waiting.begin();
+             }
 
             }
 
@@ -408,7 +453,7 @@ void Shortest_Job_First_Non_Preemptive(list<Process>buffer,list<Process>executin
     list<Process>::iterator iBuffer;
     list<Process>::iterator iExecuting;
     int clock=0;
-    bool flag=false;
+    Process p1("GAP",clock,0);
     Process temp("temp",0,0);
     iBuffer=buffer.begin();
     iExecuting=executing.begin();
@@ -451,13 +496,22 @@ void Shortest_Job_First_Non_Preemptive(list<Process>buffer,list<Process>executin
 
             if(waiting.empty()&&iBuffer->get_arrival()>clock)
             {
+            if(clock==0||waiting.begin()->get_name()!=iExecuting->get_name())
+              {
+                p1.set_arrival(clock);
+                p1.set_priority(0);
+                p1.set_end_time(clock+1);
+                executing.push_back(p1);
+                iExecuting++;
+               }
 
-              flag=(true);
-              Process p1("GAP",clock,0);
-              p1.set_priority(9999);
-              executing.push_back(p1);
-              iExecuting++;
+             else
 
+             {
+
+                 waiting.begin()->set_end_time(clock+1);
+                *iExecuting=*waiting.begin();
+             }
             }
 
         }

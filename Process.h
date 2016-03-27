@@ -12,9 +12,11 @@ private:
 	static int quantum;
 	string p_name;
 
+
 public:
 	Process(string name, int time, int burst);
 
+    void set_arrival(int t);
 	void set_priority(int prior);
 	void set_quantum(int quant);
 	void set_end_time(int t);

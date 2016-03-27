@@ -34,6 +34,10 @@ void Process::set_remaining_time()
 {
     remaining_time=remaining_time-1;
 }
+void Process::set_arrival(int t)
+{
+   arrival_time=t;
+}
 
 float Process::get_burst()
 {
