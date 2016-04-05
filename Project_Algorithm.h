@@ -10,7 +10,7 @@
 using namespace std;
 
 
-void Priority_Preemptive(list<Process>buffer,list<Process>executing)
+void Priority_Preemptive(list<Process>buffer,list<Process>&executing)
 {
     /***********************************************************************************/
     /*INPUT:list of processes SORTED according to time of Arrival(list<Process>buffer)*/
@@ -95,6 +95,7 @@ void Priority_Preemptive(list<Process>buffer,list<Process>executing)
 
     /*Printing the output of the executing list*/
     //////////////////////////////////////////////////////////////////
+    /*
      list<Process>::iterator j;
         cout<<"Name"<<"        "<<"Arrival"<<"        "<<"Priority"<<"        "<<"Remaining"<<"        "<<"End Time"<<endl;
         for(j=executing.begin();j!=executing.end();j++)
@@ -102,11 +103,12 @@ void Priority_Preemptive(list<Process>buffer,list<Process>executing)
         cout<<j->get_name()<<"            "<<j->get_arrival()<<"            "<<j->get_priority()<<"               "<<j->get_remaining_time()<<"               "<<j->get_end_time()<<endl;
         }
     /////////////////////////////////////////////////////////////////
+    */
 
 
 }
 
-void Priority_Non_Preemptive(list<Process>buffer,list<Process>executing)
+void Priority_Non_Preemptive(list<Process>buffer,list<Process>&executing)
 {
 /***********************************************************************************/
     /*INPUT:list of processes SORTED according to time of Arrival(list<Process>buffer)*/
@@ -215,6 +217,7 @@ void Priority_Non_Preemptive(list<Process>buffer,list<Process>executing)
 
     /*Printing the output of the executing list*/
     //////////////////////////////////////////////////////////////////
+    /*
      list<Process>::iterator j;
         cout<<"Name"<<"        "<<"Arrival"<<"        "<<"Priority"<<"        "<<"Remaining"<<"        "<<"End Time"<<endl;
         for(j=executing.begin();j!=executing.end();j++)
@@ -222,10 +225,11 @@ void Priority_Non_Preemptive(list<Process>buffer,list<Process>executing)
         cout<<j->get_name()<<"            "<<j->get_arrival()<<"            "<<j->get_priority()<<"               "<<j->get_remaining_time()<<"               "<<j->get_end_time()<<endl;
         }
     /////////////////////////////////////////////////////////////////
+    */
 
 }
 
-void First_Come_First_Served(list<Process>buffer,list<Process>executing)
+void First_Come_First_Served(list<Process>buffer,list<Process>&executing)
 {
    /***********************************************************************************/
     /*INPUT:list of processes SORTED according to time of Arrival(list<Process>buffer)*/
@@ -333,6 +337,7 @@ void First_Come_First_Served(list<Process>buffer,list<Process>executing)
 
     /*Printing the output of the executing list*/
     //////////////////////////////////////////////////////////////////
+    /*
      list<Process>::iterator j;
         cout<<"Name"<<"        "<<"Arrival"<<"        "<<"Priority"<<"        "<<"Remaining"<<"        "<<"End Time"<<endl;
         for(j=executing.begin();j!=executing.end();j++)
@@ -340,14 +345,14 @@ void First_Come_First_Served(list<Process>buffer,list<Process>executing)
         cout<<j->get_name()<<"            "<<j->get_arrival()<<"            "<<j->get_priority()<<"               "<<j->get_remaining_time()<<"               "<<j->get_end_time()<<endl;
         }
     /////////////////////////////////////////////////////////////////
-
+    */
 
 
 
 }
 
 
-void Shortest_Job_First_Preemptive(list<Process>buffer,list<Process>executing)
+void Shortest_Job_First_Preemptive(list<Process>buffer,list<Process>&executing)
 {
 
  /***********************************************************************************/
@@ -431,6 +436,7 @@ void Shortest_Job_First_Preemptive(list<Process>buffer,list<Process>executing)
 
     /*Printing the output of the executing list*/
     //////////////////////////////////////////////////////////////////
+    /*
      list<Process>::iterator j;
         cout<<"Name"<<"        "<<"Arrival"<<"        "<<"Priority"<<"        "<<"Remaining"<<"        "<<"End Time"<<endl;
         for(j=executing.begin();j!=executing.end();j++)
@@ -438,12 +444,12 @@ void Shortest_Job_First_Preemptive(list<Process>buffer,list<Process>executing)
         cout<<j->get_name()<<"            "<<j->get_arrival()<<"            "<<j->get_priority()<<"               "<<j->get_remaining_time()<<"               "<<j->get_end_time()<<endl;
         }
     /////////////////////////////////////////////////////////////////
-
+*/
 
 }
 
 
-void Shortest_Job_First_Non_Preemptive(list<Process>buffer,list<Process>executing)
+void Shortest_Job_First_Non_Preemptive(list<Process>buffer,list<Process>&executing)
 {
   /***********************************************************************************/
     /*INPUT:list of processes SORTED according to time of Arrival(list<Process>buffer)*/
@@ -549,8 +555,10 @@ void Shortest_Job_First_Non_Preemptive(list<Process>buffer,list<Process>executin
         clock++;
     }
 
+
     /*Printing the output of the executing list*/
     //////////////////////////////////////////////////////////////////
+    /*
      list<Process>::iterator j;
         cout<<"Name"<<"        "<<"Arrival"<<"        "<<"Priority"<<"        "<<"Remaining"<<"        "<<"End Time"<<endl;
         for(j=executing.begin();j!=executing.end();j++)
@@ -558,7 +566,7 @@ void Shortest_Job_First_Non_Preemptive(list<Process>buffer,list<Process>executin
         cout<<j->get_name()<<"            "<<j->get_arrival()<<"            "<<j->get_priority()<<"               "<<j->get_remaining_time()<<"               "<<j->get_end_time()<<endl;
         }
     /////////////////////////////////////////////////////////////////
-
+*/
 
 }
 
