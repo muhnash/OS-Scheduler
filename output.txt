@@ -1,0 +1,36 @@
+-> Enter Number of Processes: 
+
+-> Choose a scheduling algorithm from the following:
+	1- First Come First Served (FCFS)
+	2- Shortest-Job-First (SJF)
+	3- Priority 
+	4- Round - Robin 
+-> Enter your choice number: 
+======================{ 1 }======================
+Process name: Arrival Time: CPU Burst: ======================{ 2 }======================
+Process name: Arrival Time: CPU Burst: ======================{ 3 }======================
+Process name: Arrival Time: CPU Burst: ======================{ 4 }======================
+Process name: Arrival Time: CPU Burst: ======================{ 5 }======================
+Process name: Arrival Time: CPU Burst: ======================{ 6 }======================
+Process name: Arrival Time: CPU Burst: -------------
+Quantum: BEFORE ...
+p1   -858993460   -858993460		4   -858993460
+p2   -858993460   -858993460		5   -858993461
+p3   -858993460   -858993460		6   -858993462
+p4   -858993460   -858993460		1   -858993464
+p5   -858993460   -858993460		3   -858993466
+p6   -858993460   -858993460		2   -858993467
+==================={ OUTPUT }=================
+p1   0   2		4   0
+p2   2   4		5   1
+p3   4   6		6   2
+p1   6   8		2   4
+p4   8   9		1   4
+p2   10   12		3   6
+p5   12   14		3   6
+p3   14   16		4   8
+p6   16   18		2   9
+p2   18   19		1   6
+p5   20   21		1   6
+p3   22   24		2   6
+Press any key to continue . . . 

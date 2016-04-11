@@ -3,11 +3,40 @@
 #include<list>
 #include<algorithm>
 #include"Process.h"
-
+#include"S_Algorithms.h"
+#include "gtest\gtest.h"
+#include <cstdio>
 using namespace std;
+
+void print_list(list<Process> x)
+{
+	list<Process>::iterator iter;
+	for (iter = x.begin(); iter != x.end(); iter++)
+	{
+		int x = iter->get_arrival();
+		int y = iter->get_beginning();
+		int waiting = y - x;
+		cout << iter->get_name() << "   " << iter->get_beginning() << "   " << iter->get_finish() <<"		"<< iter->get_burst() << "   " << waiting << endl;
+
+	}
+
+}
+
+/*
+
+TEST(Process,)
+{
+
+}
+*/
+
 
 int main()
 {
+	freopen("input.txt", "r", stdin);
+	freopen("output.txt", "w", stdout);
+
+
 	list <Process> runqueue;
 	list <Process> ::iterator it;
 	int process_num;
@@ -32,6 +61,7 @@ int main()
 	
 	cout << endl;
 
+	int quant;
 	for (int i = 0; i < process_num; i++)
 	{
 		cout << "======================{ "<<i+1<<" }======================" << endl;
@@ -48,7 +78,6 @@ int main()
 		cin >> temp_burst;
 
 		Process temp(temp_name, temp_time, temp_burst);
-
 		if(choice==3)
 		{
 			// Priority
@@ -56,24 +85,16 @@ int main()
 			cout <<"Priority: ";
 			cin >> temp_priority;
 			temp.set_priority(temp_priority);
-			runqueue.push_back(temp);
-			continue;
 		}
 		else if (choice == 4 && i==process_num-1)
 		{
 			// Robin
-			int temp_quantum;
 			cout << "-------------" << endl;
 			cout << "Quantum: ";
-			cin >> temp_quantum;
-			temp.set_quantum(temp_quantum);
-			runqueue.push_back(temp);
+			cin >> quant;
+			
 		}
-		else
-		{
-			runqueue.push_back(temp);
-		}
-		
+		runqueue.push_back(temp);
 	}
 
 	runqueue.sort(isEarlier);
@@ -81,22 +102,50 @@ int main()
 	// NOW all processes are stored in the list named "runqueue"  , sorted by arrival time 
 	
 
- // sjf non preemptive 
+	cout << "BEFORE ..."<< endl;
+	print_list(runqueue);
+
 	list<Process> output;
 	
+	
+	switch (choice)
+	{
+		case 1 :
+		{
+			// Call FCFS
+			
+			break;
+		}
+		case 2 :
+		{
+			output = sjf_non_preemptive(runqueue);
+			break;
+		}
+		case 3 : 
+		{
+			break;
+		}
+		case 4 :
+		{
+
+			output = round_robin(runqueue, quant);
+			break;
+		}
+
+	default:
+		break;
+	}
 
 	
 
 
 	//printing all list elements 
-	for (it = runqueue.begin(); it != runqueue.end(); it++)
-	{
-		cout << it->get_name()<<"   "<<it->get_arrival() << "   " <<it->get_burst() <<it->get_priority()<<"   "<<it->get_quantum()<< endl;
-		
-	}
 	
+	cout <<"==================={ OUTPUT }================="<<endl;
+	print_list(output);
 
-	//system("pause");
+
+	system("pause");
 	return 0;
 }
 
