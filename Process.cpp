@@ -1,26 +1,14 @@
 #include "Process.h"
 #include <string>
 
-int Process::quantum;
+
 Process::Process(string name, int time, int burst)
 {
 	Process::p_name = name;
 	Process::arrival_time = time;
 	Process::cpu_burst = burst;
+	Process::remaining_time=cpu_burst;
 }
-
-/*
-Process::Process(string name, int time, int burst, int prior)
-{
-	Process::p_name = name;
-	Process::arrival_time = time;
-	Process::cpu_burst = burst;
-	Process::priority = prior;
-}
-*/
-
-
-
 
 
 
@@ -34,9 +22,17 @@ void Process::set_priority(int prior)
 	Process::priority = prior;
 }
 
-void Process::set_quantum(int quant)
+void Process::set_end_time(int t)
 {
-	Process::quantum = quant;
+    end_time=t;
+}
+void Process::set_remaining_time()
+{
+    remaining_time=remaining_time-1;
+}
+void Process::set_arrival(int t)
+{
+   arrival_time=t;
 }
 
 void Process::set_beginning(int beg)
@@ -64,10 +60,6 @@ int Process::get_priority()
 	return Process::priority;
 }
 
-int Process::get_quantum()
-{
-	return Process::quantum;
-}
 
 int Process::get_beginning()
 {
@@ -79,33 +71,19 @@ int Process::get_finish()
 	return Process::finish;
 }
 
-/*
-list<Process>::iterator first_come(list<Process> x)
+
+
+
+int Process::get_end_time()
 {
-	list<Process>::iterator it;
-	list<Process>::iterator first;
-	int min_time = x.front().get_arrival();
-	first = x.begin();
-	for (it = next(x.begin()); it != x.end(); it++)
-	{
-		
-		if (it->get_arrival() < min_time)
-		{
-			min_time = it->get_arrival();
-			first = it;
-		}
-	}
-
-
-	return first;
+    return end_time;
 }
-*/
+int Process::get_remaining_time()
+{
+     return remaining_time;
+}
 
-
-
-
-
-bool isEarlier(Process a, Process b) 
+bool isEarlier(Process a, Process b)
 {
 	if (a.get_arrival()<b.get_arrival())
 	{
@@ -115,7 +93,6 @@ bool isEarlier(Process a, Process b)
 	{
 		return false;
 	}
-
 }
 
 bool lessBurst(Process a, Process b)
@@ -131,10 +108,23 @@ bool lessBurst(Process a, Process b)
 	}
 }
 
+
 bool is_arrived(Process x, int t)
 {
 	if (x.get_arrival() <= t)
 		return true;
 	else
 		return false;
+}
+
+bool lessPrior(Process a,Process b)
+{
+     if(a.get_priority()<b.get_priority()) return true;
+     else return false;
+
+}
+bool lessCpuBurst(Process a, Process b)
+{
+   if(a.get_burst()<b.get_burst()) return true;
+     else return false;
 }

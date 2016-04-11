@@ -6,6 +6,11 @@
 
 
 trial.cpp
+*.vcxproj.user
+*.config
+
+
+
 # Compiled Object files
 *.slo
 *.lo
