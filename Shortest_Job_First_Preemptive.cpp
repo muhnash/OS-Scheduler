@@ -39,7 +39,7 @@ void Shortest_Job_First_Preemptive(list<Process>buffer,list<Process>&executing)
             {
               if(clock==0||waiting.begin()->get_name()!=iExecuting->get_name())
               {
-                p1.set_arrival(clock);
+                p1.set_beginning(clock);
                 p1.set_priority(0);
                 p1.set_end_time(clock+1);
                 executing.push_back(p1);
@@ -73,6 +73,7 @@ void Shortest_Job_First_Preemptive(list<Process>buffer,list<Process>&executing)
 
            else if(waiting.begin()->get_name()!=iExecuting->get_name())
             {
+            waiting.begin()->set_beginning(clock);
             executing.push_back(*waiting.begin());
             iExecuting++;
             }

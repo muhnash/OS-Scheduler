@@ -1,7 +1,7 @@
 #include "Process.h"
 #include <string>
 
-int Process::quantum;
+
 Process::Process(string name, int time, int burst)
 {
 	Process::p_name = name;
@@ -22,10 +22,6 @@ void Process::set_priority(int prior)
 	Process::priority = prior;
 }
 
-void Process::set_quantum(int quant)
-{
-	Process::quantum = quant;
-}
 void Process::set_end_time(int t)
 {
     end_time=t;
@@ -39,7 +35,17 @@ void Process::set_arrival(int t)
    arrival_time=t;
 }
 
-float Process::get_burst()
+void Process::set_beginning(int beg)
+{
+	Process::beginning = beg;
+}
+
+void Process::set_finish(int fin)
+{
+	Process::finish = fin;
+}
+
+int Process::get_burst()
 {
 	return Process::cpu_burst;
 }
@@ -54,10 +60,20 @@ int Process::get_priority()
 	return Process::priority;
 }
 
-int Process::get_quantum()
+
+int Process::get_beginning()
 {
-	return Process::quantum;
+	return Process::beginning;
 }
+
+int Process::get_finish()
+{
+	return Process::finish;
+}
+
+
+
+
 int Process::get_end_time()
 {
     return end_time;
@@ -66,6 +82,7 @@ int Process::get_remaining_time()
 {
      return remaining_time;
 }
+
 bool isEarlier(Process a, Process b)
 {
 	if (a.get_arrival()<b.get_arrival())
@@ -76,7 +93,6 @@ bool isEarlier(Process a, Process b)
 	{
 		return false;
 	}
-
 }
 
 bool lessBurst(Process a, Process b)
@@ -91,6 +107,16 @@ bool lessBurst(Process a, Process b)
 		return false;
 	}
 }
+
+
+bool is_arrived(Process x, int t)
+{
+	if (x.get_arrival() <= t)
+		return true;
+	else
+		return false;
+}
+
 bool lessPrior(Process a,Process b)
 {
      if(a.get_priority()<b.get_priority()) return true;
@@ -101,5 +127,4 @@ bool lessCpuBurst(Process a, Process b)
 {
    if(a.get_burst()<b.get_burst()) return true;
      else return false;
-
 }
