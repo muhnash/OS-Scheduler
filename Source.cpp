@@ -33,8 +33,8 @@ TEST(Process,)
 
 int main()
 {
-	freopen("input.txt", "r", stdin);
-	freopen("output.txt", "w", stdout);
+	//freopen("input.txt", "r", stdin);
+	//freopen("output.txt", "w", stdout);
 
 
 	list <Process> runqueue;
@@ -52,9 +52,11 @@ int main()
 	cout << endl;
 	cout <<"-> Choose a scheduling algorithm from the following:"<< endl;
 	cout <<"	1- First Come First Served (FCFS)" << endl;
-	cout <<"	2- Shortest-Job-First (SJF)" << endl;
-	cout <<"	3- Priority " << endl;
-	cout <<"	4- Round - Robin " << endl;
+	cout <<"	2- Shortest-Job-First (SJF) - Non-Preemptive" << endl;
+	cout << "	3- Shortest-Job-First (SJF) - Preemptive" << endl;
+	cout <<"	4- Priority - Non-Preemptive " << endl;
+	cout << "	5- Priority - Preemptive" << endl;
+	cout <<"	6- Round - Robin " << endl;
 	cout <<"-> Enter your choice number: " ;
 	cin >> choice;
 	//TODO : handle invalid input values for choice
@@ -78,7 +80,7 @@ int main()
 		cin >> temp_burst;
 
 		Process temp(temp_name, temp_time, temp_burst);
-		if(choice==3)
+		if(choice==4 || choice ==5)
 		{
 			// Priority
 			int temp_priority;
@@ -86,7 +88,7 @@ int main()
 			cin >> temp_priority;
 			temp.set_priority(temp_priority);
 		}
-		else if (choice == 4 && i==process_num-1)
+		else if (choice == 6 && i==process_num-1)
 		{
 			// Robin
 			cout << "-------------" << endl;
@@ -112,22 +114,32 @@ int main()
 	{
 		case 1 :
 		{
-			// Call FCFS
-			
+			First_Come_First_Served(runqueue, output);
 			break;
 		}
 		case 2 :
 		{
 			output = sjf_non_preemptive(runqueue);
+			//Shortest_Job_First_Non_Preemptive(runqueue, output);
 			break;
 		}
 		case 3 : 
 		{
+			Shortest_Job_First_Preemptive(runqueue, output);
 			break;
 		}
-		case 4 :
+		case 4:
 		{
-
+			Priority_Non_Preemptive(runqueue, output);
+			break;
+		}
+		case 5:
+		{
+			Priority_Preemptive(runqueue, output);
+			break;
+		}
+		case 6 :
+		{
 			output = round_robin(runqueue, quant);
 			break;
 		}
