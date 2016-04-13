@@ -2,9 +2,11 @@
 
 -> Choose a scheduling algorithm from the following:
 	1- First Come First Served (FCFS)
-	2- Shortest-Job-First (SJF)
-	3- Priority 
-	4- Round - Robin 
+	2- Shortest-Job-First (SJF) - Non-Preemptive
+	3- Shortest-Job-First (SJF) - Preemptive
+	4- Priority - Non-Preemptive 
+	5- Priority - Preemptive
+	6- Round - Robin 
 -> Enter your choice number: 
 ======================{ 1 }======================
 Process name: Arrival Time: CPU Burst: ======================{ 2 }======================
@@ -13,24 +15,12 @@ Process name: Arrival Time: CPU Burst: ======================{ 4 }==============
 Process name: Arrival Time: CPU Burst: ======================{ 5 }======================
 Process name: Arrival Time: CPU Burst: ======================{ 6 }======================
 Process name: Arrival Time: CPU Burst: -------------
-Quantum: BEFORE ...
-p1   -858993460   -858993460		4   -858993460
-p2   -858993460   -858993460		5   -858993461
-p3   -858993460   -858993460		6   -858993462
-p4   -858993460   -858993460		1   -858993464
-p5   -858993460   -858993460		3   -858993466
-p6   -858993460   -858993460		2   -858993467
-==================={ OUTPUT }=================
-p1   0   2		4   0
-p2   2   4		5   1
-p3   4   6		6   2
-p1   6   8		2   4
-p4   8   9		1   4
-p2   10   12		3   6
-p5   12   14		3   6
-p3   14   16		4   8
-p6   16   18		2   9
-p2   18   19		1   6
-p5   20   21		1   6
-p3   22   24		2   6
+Quantum: ==================={ OUTPUT }=================
+
+Gantt chart :
+  |    p1  |   |     p2  |   |      p3  |   |  p1  |   | p4  |   |   p2  |   |   p5  |   |    p3  |   |  p6  |   | p2  |   | p5  |   |  p3  | 
+  0        2   2         4   4          6   6      8   8     9  10      12  12      14  14       16  16     18  18    19  20    21  22     24 
+
+Average Waiting time = 4.83333
+
 Press any key to continue . . . 

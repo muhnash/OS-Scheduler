@@ -4,129 +4,6 @@
 #include <algorithm>
 
 
-
-void First_Come_First_Served(list<Process>buffer, list<Process>&executing)
-{
-	/***********************************************************************************/
-	/*INPUT:list of processes SORTED according to time of Arrival(list<Process>buffer)*/
-	/*OUTPUT:list of process executed in the processor(list<Process>executing)*/
-	/***********************************************************************************/
-	list<Process> waiting;
-	list<Process>::iterator iBuffer;
-	list<Process>::iterator iExecuting;
-	int clock = 0;
-	Process p1("GAP", clock, 0);
-	Process temp("temp", 0, 0);
-	iBuffer = buffer.begin();
-	iExecuting = executing.begin();
-
-	while (iBuffer != buffer.end() || clock == 0 || !waiting.empty()) //------>MAIN PROGRAM WHILE LOOP
-	{
-		/*Organizting the flow of the input data from the buffer list to the waiting list */
-		/*This section is handling the following*/
-		/*1) Entrance of the data with the respect to it's Arrival Time
-		2) Handling the case of empty process "GAP" */
-
-		/////////////////////////////////////////////////////////////////////////////////////////
-		if (iBuffer != buffer.end())
-		{
-
-			if (waiting.empty())
-			{
-				while (iBuffer->get_arrival() <= clock&&iBuffer != buffer.end())
-				{
-					waiting.push_back(*iBuffer);
-					iBuffer++;
-					//waiting.sort(lessPrior);
-				}
-			}
-			else
-			{
-				temp = *waiting.begin();
-				waiting.erase(waiting.begin());
-				while (iBuffer->get_arrival() <= clock&&iBuffer != buffer.end())
-				{
-					waiting.push_back(*iBuffer);
-					iBuffer++;
-					//waiting.sort(lessPrior);
-				}
-
-				waiting.push_front(temp);
-
-			}
-
-
-			if (waiting.empty() && iBuffer->get_arrival()>clock)
-			{
-				if (clock == 0 || waiting.begin()->get_name() != iExecuting->get_name())
-				{
-					p1.set_arrival(clock);
-					p1.set_priority(0);
-					p1.set_end_time(clock + 1);
-					executing.push_back(p1);
-					iExecuting++;
-				}
-
-				else
-
-				{
-
-					waiting.begin()->set_end_time(clock + 1);
-					*iExecuting = *waiting.begin();
-				}
-			}
-
-		}
-
-		/*MAIN CORE OF THE ALGORITHM*/
-		/////////////////////////////////////////////////////////////////////////////////////////////////////////
-		if (!waiting.empty())
-		{
-
-			waiting.begin()->set_remaining_time();
-			waiting.begin()->set_end_time(clock + 1);
-			if (clock == 0)
-			{
-				executing.push_back(*waiting.begin());
-				iExecuting++;
-			}
-
-			else if (waiting.begin()->get_name() != iExecuting->get_name())
-			{
-				executing.push_back(*waiting.begin());
-				iExecuting++;
-			}
-			else
-			{
-				*iExecuting = *waiting.begin();
-			}
-
-			if (waiting.begin()->get_remaining_time() == 0)
-			{
-				waiting.erase(waiting.begin());
-				//waiting.sort(lessPrior);
-			}
-
-		}
-		clock++;
-	}
-
-	/*Printing the output of the executing list*/
-	//////////////////////////////////////////////////////////////////
-	/*
-	list<Process>::iterator j;
-	cout<<"Name"<<"        "<<"Arrival"<<"        "<<"Priority"<<"        "<<"Remaining"<<"        "<<"End Time"<<endl;
-	for(j=executing.begin();j!=executing.end();j++)
-	{
-	cout<<j->get_name()<<"            "<<j->get_arrival()<<"            "<<j->get_priority()<<"               "<<j->get_remaining_time()<<"               "<<j->get_end_time()<<endl;
-	}
-	/////////////////////////////////////////////////////////////////
-	*/
-
-
-
-}
-
 list<Process>sjf_non_preemptive(list<Process> input)
 {
 	/*
@@ -144,7 +21,7 @@ list<Process>sjf_non_preemptive(list<Process> input)
 				push back it to temp
 	  			erase it from input
 				update time = time + burst of process
-	
+
 	UPDATE FOR HANDLING GAPS
 		 - get the min arrival time of the remaining processes
 		 - if time < min_arrival_time ===> this is a gap coming
@@ -172,7 +49,7 @@ list<Process>sjf_non_preemptive(list<Process> input)
 
 				next.set_beginning(time);
 				next.set_finish(time + next.get_burst());
-				
+
 				temp.push_back(next);
 				time += next.get_burst();
 				break;
@@ -193,334 +70,9 @@ list<Process>sjf_non_preemptive(list<Process> input)
 	return temp;
 }
 
-list<Process> sjf_preemptive(list<Process> input)
-{
-	int time = 0;
-	list<Process>temp;
-
-	return temp;
-}
-
-void Shortest_Job_First_Preemptive(list<Process>buffer, list<Process>&executing)
-{
-
-	/***********************************************************************************/
-	/*INPUT:list of processes SORTED according to time of Arrival(list<Process>buffer)*/
-	/*OUTPUT:list of process executed in the processor(list<Process>executing)*/
-	/***********************************************************************************/
-	list<Process> waiting;
-	list<Process>::iterator iBuffer;
-	list<Process>::iterator iExecuting;
-	int clock = 0;
-	Process p1("GAP", 0, 0);
-	iBuffer = buffer.begin();
-	iExecuting = executing.begin();
-
-	while (iBuffer != buffer.end() || clock == 0 || !waiting.empty()) //------>MAIN PROGRAM WHILE LOOP
-	{
-		/*Organizting the flow of the input data from the buffer list to the waiting list */
-		/*This section is handling the following*/
-		/*1) Entrance of the data with the respect to it's Arrival Time
-		2) Handling the case of empty process "GAP" */
-
-		/////////////////////////////////////////////////////////////////////////////////////////
-		if (iBuffer != buffer.end())
-		{
-			while (iBuffer->get_arrival() <= clock&&iBuffer != buffer.end())
-			{
-				waiting.push_back(*iBuffer);
-				iBuffer++;
-			}
-			if (waiting.empty() && iBuffer->get_arrival()>clock)
-			{
-				if (clock == 0 || waiting.begin()->get_name() != iExecuting->get_name())
-				{
-					p1.set_arrival(clock);
-					p1.set_priority(0);
-					p1.set_end_time(clock + 1);
-					executing.push_back(p1);
-					iExecuting++;
-				}
-
-				else
-
-				{
-
-					waiting.begin()->set_end_time(clock + 1);
-					*iExecuting = *waiting.begin();
-				}
-
-			}
-
-		}
-
-		/*MAIN CORE OF THE ALGORITHM*/
-		/////////////////////////////////////////////////////////////////////////////////////////////////////////
-		if (!waiting.empty())
-		{
-			waiting.sort(lessCpuBurst);
-			waiting.begin()->set_remaining_time();
-			waiting.begin()->set_end_time(clock + 1);
-			if (clock == 0)
-			{
-				executing.push_back(*waiting.begin());
-				iExecuting++;
-			}
-
-			else if (waiting.begin()->get_name() != iExecuting->get_name())
-			{
-				executing.push_back(*waiting.begin());
-				iExecuting++;
-			}
-			else
-			{
-				*iExecuting = *waiting.begin();
-			}
-
-			if (waiting.begin()->get_remaining_time() == 0)
-				waiting.erase(waiting.begin());
-		}
-		clock++;
-	}
-
-	/*Printing the output of the executing list*/
-	//////////////////////////////////////////////////////////////////
-	/*
-	list<Process>::iterator j;
-	cout<<"Name"<<"        "<<"Arrival"<<"        "<<"Priority"<<"        "<<"Remaining"<<"        "<<"End Time"<<endl;
-	for(j=executing.begin();j!=executing.end();j++)
-	{
-	cout<<j->get_name()<<"            "<<j->get_arrival()<<"            "<<j->get_priority()<<"               "<<j->get_remaining_time()<<"               "<<j->get_end_time()<<endl;
-	}
-	/////////////////////////////////////////////////////////////////
-	*/
-
-}
-
-
-
-void Priority_Non_Preemptive(list<Process>buffer, list<Process>&executing)
-{
-	/***********************************************************************************/
-	/*INPUT:list of processes SORTED according to time of Arrival(list<Process>buffer)*/
-	/*OUTPUT:list of process executed in the processor(list<Process>executing)*/
-	/***********************************************************************************/
-	list<Process> waiting;
-	list<Process>::iterator iBuffer;
-	list<Process>::iterator iExecuting;
-	int clock = 0;
-	Process p1("GAP", clock, 0);
-
-	Process temp("temp", 0, 0);
-	iBuffer = buffer.begin();
-	iExecuting = executing.begin();
-
-	while (iBuffer != buffer.end() || clock == 0 || !waiting.empty()) //------>MAIN PROGRAM WHILE LOOP
-	{
-		/*Organizting the flow of the input data from the buffer list to the waiting list */
-		/*This section is handling the following*/
-		/*1) Entrance of the data with the respect to it's Arrival Time
-		2) Handling the case of empty process "GAP" */
-
-		/////////////////////////////////////////////////////////////////////////////////////////
-		if (iBuffer != buffer.end())
-		{
-
-			if (waiting.empty())
-			{
-				while (iBuffer->get_arrival() <= clock&&iBuffer != buffer.end())
-				{
-					waiting.push_back(*iBuffer);
-					iBuffer++;
-					waiting.sort(lessPrior);
-				}
-			}
-			else
-			{
-				temp = *waiting.begin();
-				waiting.erase(waiting.begin());
-				while (iBuffer->get_arrival() <= clock&&iBuffer != buffer.end())
-				{
-					waiting.push_back(*iBuffer);
-					iBuffer++;
-					waiting.sort(lessPrior);
-				}
-
-				waiting.push_front(temp);
-
-			}
-
-
-			if (waiting.empty() && iBuffer->get_arrival()>clock)
-			{
-				if (clock == 0 || waiting.begin()->get_name() != iExecuting->get_name())
-				{
-
-					p1.set_arrival(clock);
-					p1.set_priority(0);
-					executing.push_back(p1);
-					iExecuting++;
-				}
-				else
-				{
-
-					waiting.begin()->set_end_time(clock + 1);
-					*iExecuting = *waiting.begin();
-
-				}
-
-			}
-
-		}
-
-		/*MAIN CORE OF THE ALGORITHM*/
-		/////////////////////////////////////////////////////////////////////////////////////////////////////////
-		if (!waiting.empty())
-		{
-
-			waiting.begin()->set_remaining_time();
-			waiting.begin()->set_end_time(clock + 1);
-			if (clock == 0)
-			{
-				executing.push_back(*waiting.begin());
-				iExecuting++;
-			}
-
-			else if (waiting.begin()->get_name() != iExecuting->get_name())
-			{
-				executing.push_back(*waiting.begin());
-				iExecuting++;
-			}
-			else
-			{
-				*iExecuting = *waiting.begin();
-			}
-
-			if (waiting.begin()->get_remaining_time() == 0)
-			{
-				waiting.erase(waiting.begin());
-				//waiting.sort(lessPrior);
-			}
-
-		}
-		clock++;
-	}
-
-	/*Printing the output of the executing list*/
-	//////////////////////////////////////////////////////////////////
-	/*
-	list<Process>::iterator j;
-	cout<<"Name"<<"        "<<"Arrival"<<"        "<<"Priority"<<"        "<<"Remaining"<<"        "<<"End Time"<<endl;
-	for(j=executing.begin();j!=executing.end();j++)
-	{
-	cout<<j->get_name()<<"            "<<j->get_arrival()<<"            "<<j->get_priority()<<"               "<<j->get_remaining_time()<<"               "<<j->get_end_time()<<endl;
-	}
-	/////////////////////////////////////////////////////////////////
-	*/
-
-}
-
-void Priority_Preemptive(list<Process>buffer, list<Process>&executing)
-{
-	/***********************************************************************************/
-	/*INPUT:list of processes SORTED according to time of Arrival(list<Process>buffer)*/
-	/*OUTPUT:list of process executed in the processor(list<Process>executing)*/
-	/***********************************************************************************/
-	list<Process> waiting;
-	list<Process>::iterator iBuffer;
-	list<Process>::iterator iExecuting;
-	int clock = 0;
-	Process p1("GAP", clock, 0);
-	iBuffer = buffer.begin();
-	iExecuting = executing.begin();
-
-	while (iBuffer != buffer.end() || clock == 0 || !waiting.empty()) //------>MAIN PROGRAM WHILE LOOP
-	{
-		/*Organizting the flow of the input data from the buffer list to the waiting list */
-		/*This section is handling the following*/
-		/*1) Entrance of the data with the respect to it's Arrival Time
-		2) Handling the case of empty process "GAP" */
-
-		/////////////////////////////////////////////////////////////////////////////////////////
-		if (iBuffer != buffer.end())
-		{
-			while (iBuffer->get_arrival() <= clock&&iBuffer != buffer.end())
-			{
-				waiting.push_back(*iBuffer);
-				iBuffer++;
-			}
-			if (waiting.empty() && iBuffer->get_arrival()>clock)
-			{
-
-
-				if (clock == 0 || waiting.begin()->get_name() != iExecuting->get_name())
-				{
-					p1.set_arrival(clock);
-					p1.set_priority(0);
-					p1.set_end_time(clock + 1);
-					executing.push_back(p1);
-					iExecuting++;
-				}
-
-				else
-
-				{
-
-					waiting.begin()->set_end_time(clock + 1);
-					*iExecuting = *waiting.begin();
-				}
-
-			}
-
-		}
-
-		/*MAIN CORE OF THE ALGORITHM*/
-		/////////////////////////////////////////////////////////////////////////////////////////////////////////
-		if (!waiting.empty())
-		{
-			waiting.sort(lessPrior);
-			waiting.begin()->set_remaining_time();
-			waiting.begin()->set_end_time(clock + 1);
-			if (clock == 0)
-			{
-				executing.push_back(*waiting.begin());
-				iExecuting++;
-			}
-
-			else if (waiting.begin()->get_name() != iExecuting->get_name())
-			{
-				executing.push_back(*waiting.begin());
-				iExecuting++;
-			}
-			else
-			{
-				*iExecuting = *waiting.begin();
-			}
-
-			if (waiting.begin()->get_remaining_time() == 0)
-				waiting.erase(waiting.begin());
-		}
-		clock++;
-	}
-
-	/*Printing the output of the executing list*/
-	//////////////////////////////////////////////////////////////////
-	/*
-	list<Process>::iterator j;
-	cout<<"Name"<<"        "<<"Arrival"<<"        "<<"Priority"<<"        "<<"Remaining"<<"        "<<"End Time"<<endl;
-	for(j=executing.begin();j!=executing.end();j++)
-	{
-	cout<<j->get_name()<<"            "<<j->get_arrival()<<"            "<<j->get_priority()<<"               "<<j->get_remaining_time()<<"               "<<j->get_end_time()<<endl;
-	}
-	/////////////////////////////////////////////////////////////////
-	*/
-
-
-}
-
 list<Process> round_robin(list<Process> input, int quantum)
 {
-	// input is sorted by arrival time 
+	// input is sorted by arrival time
 	// sort(input.begin(), input.end(), isEarlier);
 	int time = input.front().get_arrival();
 
@@ -560,7 +112,7 @@ list<Process> round_robin(list<Process> input, int quantum)
 
 
 
-		//--- from request queue to the output 
+		//--- from request queue to the output
 		for (it2 = request_queue.begin();it2 != request_queue.end();it2++)
 		{
 			if (it2->get_burst() <= quantum)
@@ -595,3 +147,507 @@ list<Process> round_robin(list<Process> input, int quantum)
 
 	return output;
 }
+
+void First_Come_First_Served(list<Process>buffer,list<Process>&executing)
+{
+   /***********************************************************************************/
+    /*INPUT:list of processes SORTED according to time of Arrival(list<Process>buffer)*/
+    /*OUTPUT:list of process executed in the processor(list<Process>executing)*/
+    /***********************************************************************************/
+    list<Process> waiting;
+    list<Process>::iterator iBuffer;
+    list<Process>::iterator iExecuting;
+    int clock=0;
+    Process p1("GAP",clock,0);
+    Process temp("temp",0,0);
+    iBuffer=buffer.begin();
+    iExecuting=executing.begin();
+
+    while(iBuffer!=buffer.end() || clock==0||!waiting.empty() ) //------>MAIN PROGRAM WHILE LOOP
+    {
+       /*Organizting the flow of the input data from the buffer list to the waiting list */
+       /*This section is handling the following*/
+       /*1) Entrance of the data with the respect to it's Arrival Time
+         2) Handling the case of empty process "GAP" */
+
+      /////////////////////////////////////////////////////////////////////////////////////////
+        if(iBuffer!=buffer.end())
+        {
+
+            if(waiting.empty())
+            {
+            while(iBuffer->get_arrival()<=clock&&iBuffer!=buffer.end())
+            {
+            waiting.push_back(*iBuffer);
+            iBuffer++;
+            //waiting.sort(lessPrior);
+            }
+            }
+            else
+            {
+                temp=*waiting.begin();
+                waiting.erase(waiting.begin());
+                 while(iBuffer->get_arrival()<=clock&&iBuffer!=buffer.end())
+                 {
+                     waiting.push_back(*iBuffer);
+                     iBuffer++;
+                     //waiting.sort(lessPrior);
+                 }
+
+                 waiting.push_front(temp);
+
+            }
+
+
+            if(waiting.empty()&&iBuffer->get_arrival()>clock)
+            {
+               if(clock==0||waiting.begin()->get_name()!=iExecuting->get_name())
+              {
+                p1.set_beginning(clock);
+                p1.set_priority(0);
+                p1.set_end_time(clock+1);
+                executing.push_back(p1);
+                iExecuting++;
+               }
+
+             else
+
+             {
+
+                 waiting.begin()->set_end_time(clock+1);
+                *iExecuting=*waiting.begin();
+             }
+            }
+
+        }
+
+        /*MAIN CORE OF THE ALGORITHM*/
+        /////////////////////////////////////////////////////////////////////////////////////////////////////////
+        if(!waiting.empty())
+        {
+
+            waiting.begin()->set_remaining_time();
+            waiting.begin()->set_end_time(clock+1);
+            if(clock==0)
+            {
+              executing.push_back(*waiting.begin());
+              iExecuting++;
+            }
+
+           else if(waiting.begin()->get_name()!=iExecuting->get_name())
+            {
+              waiting.begin()->set_beginning(clock);
+            executing.push_back(*waiting.begin());
+            iExecuting++;
+
+            }
+            else
+            {
+              *iExecuting=*waiting.begin();
+            }
+
+            if(waiting.begin()->get_remaining_time()==0)
+            {
+                  waiting.erase(waiting.begin());
+                  //waiting.sort(lessPrior);
+            }
+
+        }
+        clock++;
+    }
+}
+
+void Priority_Non_Preemptive(list<Process>buffer,list<Process>&executing)
+{
+     /***********************************************************************************/
+    /*INPUT:list of processes SORTED according to time of Arrival(list<Process>buffer)*/
+    /*OUTPUT:list of process executed in the processor(list<Process>executing)*/
+    /***********************************************************************************/
+    list<Process> waiting;
+    list<Process>::iterator iBuffer;
+    list<Process>::iterator iExecuting;
+    int clock=0;
+    Process p1("GAP",clock,0);
+
+    Process temp("temp",0,0);
+    iBuffer=buffer.begin();
+    iExecuting=executing.begin();
+
+    while(iBuffer!=buffer.end() || clock==0||!waiting.empty() ) //------>MAIN PROGRAM WHILE LOOP
+    {
+       /*Organizting the flow of the input data from the buffer list to the waiting list */
+       /*This section is handling the following*/
+       /*1) Entrance of the data with the respect to it's Arrival Time
+         2) Handling the case of empty process "GAP" */
+
+      /////////////////////////////////////////////////////////////////////////////////////////
+        if(iBuffer!=buffer.end())
+        {
+
+            if(waiting.empty())
+            {
+            while(iBuffer->get_arrival()<=clock&&iBuffer!=buffer.end())
+            {
+            waiting.push_back(*iBuffer);
+            iBuffer++;
+            waiting.sort(lessPrior);
+            }
+            }
+            else
+            {
+                temp=*waiting.begin();
+                waiting.erase(waiting.begin());
+                 while(iBuffer->get_arrival()<=clock&&iBuffer!=buffer.end())
+                 {
+                     waiting.push_back(*iBuffer);
+                     iBuffer++;
+                     waiting.sort(lessPrior);
+                 }
+
+                 waiting.push_front(temp);
+
+            }
+
+
+            if(waiting.empty()&&iBuffer->get_arrival()>clock)
+            {
+                if(clock==0||waiting.begin()->get_name()!=iExecuting->get_name())
+                {
+
+                 p1.set_beginning(clock);
+                 p1.set_priority(0);
+                 executing.push_back(p1);
+                 iExecuting++;
+                 }
+                 else
+                 {
+
+                  waiting.begin()->set_end_time(clock+1);
+                 *iExecuting=*waiting.begin();
+
+                 }
+
+            }
+
+        }
+
+        /*MAIN CORE OF THE ALGORITHM*/
+        /////////////////////////////////////////////////////////////////////////////////////////////////////////
+        if(!waiting.empty())
+        {
+
+            waiting.begin()->set_remaining_time();
+            waiting.begin()->set_end_time(clock+1);
+            if(clock==0)
+            {
+              executing.push_back(*waiting.begin());
+              iExecuting++;
+            }
+
+           else if(waiting.begin()->get_name()!=iExecuting->get_name())
+            {
+            waiting.begin()->set_beginning(clock);
+            executing.push_back(*waiting.begin());
+            iExecuting++;
+            }
+            else
+            {
+              *iExecuting=*waiting.begin();
+            }
+
+            if(waiting.begin()->get_remaining_time()==0)
+            {
+                  waiting.erase(waiting.begin());
+                  //waiting.sort(lessPrior);
+            }
+
+        }
+        clock++;
+    }
+}
+
+void Priority_Preemptive(list<Process>buffer,list<Process>&executing)
+{
+    /***********************************************************************************/
+    /*INPUT:list of processes SORTED according to time of Arrival(list<Process>buffer)*/
+    /*OUTPUT:list of process executed in the processor(list<Process>executing)*/
+    /***********************************************************************************/
+    list<Process> waiting;
+    list<Process>::iterator iBuffer;
+    list<Process>::iterator iExecuting;
+    int clock=0;
+    Process p1("GAP",clock,0);
+    iBuffer=buffer.begin();
+    iExecuting=executing.begin();
+
+    while(iBuffer!=buffer.end() || clock==0||!waiting.empty() ) //------>MAIN PROGRAM WHILE LOOP
+    {
+       /*Organizting the flow of the input data from the buffer list to the waiting list */
+       /*This section is handling the following*/
+       /*1) Entrance of the data with the respect to it's Arrival Time
+         2) Handling the case of empty process "GAP" */
+
+      /////////////////////////////////////////////////////////////////////////////////////////
+        if(iBuffer!=buffer.end())
+        {
+            while(iBuffer->get_arrival()<=clock&&iBuffer!=buffer.end())
+            {
+            waiting.push_back(*iBuffer);
+            iBuffer++;
+            }
+            if(waiting.empty()&&iBuffer->get_arrival()>clock)
+            {
+
+
+               if(clock==0||waiting.begin()->get_name()!=iExecuting->get_name())
+              {
+                p1.set_beginning(clock);
+                p1.set_priority(0);
+                p1.set_end_time(clock+1);
+                executing.push_back(p1);
+                iExecuting++;
+               }
+
+             else
+
+             {
+
+                 waiting.begin()->set_end_time(clock+1);
+                *iExecuting=*waiting.begin();
+             }
+
+            }
+
+        }
+
+        /*MAIN CORE OF THE ALGORITHM*/
+        /////////////////////////////////////////////////////////////////////////////////////////////////////////
+        if(!waiting.empty())
+        {
+            waiting.sort(lessPrior);
+            waiting.begin()->set_remaining_time();
+            waiting.begin()->set_end_time(clock+1);
+            if(clock==0)
+            {
+              executing.push_back(*waiting.begin());
+              iExecuting++;
+            }
+
+           else if(waiting.begin()->get_name()!=iExecuting->get_name())
+            {
+            waiting.begin()->set_beginning(clock);
+            executing.push_back(*waiting.begin());
+            iExecuting++;
+            }
+            else
+            {
+              *iExecuting=*waiting.begin();
+            }
+
+            if(waiting.begin()->get_remaining_time()==0)
+                  waiting.erase(waiting.begin());
+        }
+        clock++;
+    }
+}
+
+
+
+void Shortest_Job_First_Non_Preemptive(list<Process>buffer,list<Process>&executing)
+{
+  /***********************************************************************************/
+    /*INPUT:list of processes SORTED according to time of Arrival(list<Process>buffer)*/
+    /*OUTPUT:list of process executed in the processor(list<Process>executing)*/
+    /***********************************************************************************/
+    list<Process> waiting;
+    list<Process>::iterator iBuffer;
+    list<Process>::iterator iExecuting;
+    int clock=0;
+    Process p1("GAP",clock,0);
+    Process temp("temp",0,0);
+    iBuffer=buffer.begin();
+    iExecuting=executing.begin();
+
+    while(iBuffer!=buffer.end() || clock==0||!waiting.empty() ) //------>MAIN PROGRAM WHILE LOOP
+    {
+       /*Organizting the flow of the input data from the buffer list to the waiting list */
+       /*This section is handling the following*/
+       /*1) Entrance of the data with the respect to it's Arrival Time
+         2) Handling the case of empty process "GAP" */
+
+      /////////////////////////////////////////////////////////////////////////////////////////
+        if(iBuffer!=buffer.end())
+        {
+
+            if(waiting.empty())
+            {
+            while(iBuffer->get_arrival()<=clock&&iBuffer!=buffer.end())
+            {
+            waiting.push_back(*iBuffer);
+            iBuffer++;
+            waiting.sort(lessCpuBurst);
+            }
+            }
+            else
+            {
+                temp=*waiting.begin();
+                waiting.erase(waiting.begin());
+                 while(iBuffer->get_arrival()<=clock&&iBuffer!=buffer.end())
+                 {
+                     waiting.push_back(*iBuffer);
+                     iBuffer++;
+                     waiting.sort(lessCpuBurst);
+                 }
+
+                 waiting.push_front(temp);
+
+            }
+
+
+            if(waiting.empty()&&iBuffer->get_arrival()>clock)
+            {
+            if(clock==0||waiting.begin()->get_name()!=iExecuting->get_name())
+              {
+                p1.set_beginning(clock);
+                p1.set_priority(0);
+                p1.set_end_time(clock+1);
+                executing.push_back(p1);
+                iExecuting++;
+               }
+
+             else
+
+             {
+
+                 waiting.begin()->set_end_time(clock+1);
+                *iExecuting=*waiting.begin();
+             }
+            }
+
+        }
+
+        /*MAIN CORE OF THE ALGORITHM*/
+        /////////////////////////////////////////////////////////////////////////////////////////////////////////
+        if(!waiting.empty())
+        {
+
+            waiting.begin()->set_remaining_time();
+            waiting.begin()->set_end_time(clock+1);
+            if(clock==0)
+            {
+              executing.push_back(*waiting.begin());
+              iExecuting++;
+            }
+
+           else if(waiting.begin()->get_name()!=iExecuting->get_name())
+            {
+            waiting.begin()->set_beginning(clock);
+            executing.push_back(*waiting.begin());
+            iExecuting++;
+            }
+            else
+            {
+              *iExecuting=*waiting.begin();
+            }
+
+            if(waiting.begin()->get_remaining_time()==0)
+            {
+                  waiting.erase(waiting.begin());
+                  //waiting.sort(lessPrior);
+            }
+
+        }
+        clock++;
+    }
+
+}
+
+
+
+
+
+void Shortest_Job_First_Preemptive(list<Process>buffer,list<Process>&executing)
+{
+
+    /***********************************************************************************/
+    /*INPUT:list of processes SORTED according to time of Arrival(list<Process>buffer)*/
+    /*OUTPUT:list of process executed in the processor(list<Process>executing)*/
+    /***********************************************************************************/
+    list<Process> waiting;
+    list<Process>::iterator iBuffer;
+    list<Process>::iterator iExecuting;
+    int clock=0;
+    Process p1("GAP",0,0);
+    iBuffer=buffer.begin();
+    iExecuting=executing.begin();
+
+    while(iBuffer!=buffer.end() || clock==0||!waiting.empty() ) //------>MAIN PROGRAM WHILE LOOP
+    {
+       /*Organizting the flow of the input data from the buffer list to the waiting list */
+       /*This section is handling the following*/
+       /*1) Entrance of the data with the respect to it's Arrival Time
+         2) Handling the case of empty process "GAP" */
+
+      /////////////////////////////////////////////////////////////////////////////////////////
+        if(iBuffer!=buffer.end())
+        {
+            while(iBuffer->get_arrival()<=clock&&iBuffer!=buffer.end())
+            {
+            waiting.push_back(*iBuffer);
+            iBuffer++;
+            }
+            if(waiting.empty()&&iBuffer->get_arrival()>clock)
+            {
+              if(clock==0||waiting.begin()->get_name()!=iExecuting->get_name())
+              {
+                p1.set_beginning(clock);
+                p1.set_priority(0);
+                p1.set_end_time(clock+1);
+                executing.push_back(p1);
+                iExecuting++;
+               }
+
+             else
+
+             {
+
+                 waiting.begin()->set_end_time(clock+1);
+                *iExecuting=*waiting.begin();
+             }
+
+            }
+
+        }
+
+        /*MAIN CORE OF THE ALGORITHM*/
+        /////////////////////////////////////////////////////////////////////////////////////////////////////////
+        if(!waiting.empty())
+        {
+            waiting.sort(lessCpuBurst);
+            waiting.begin()->set_remaining_time();
+            waiting.begin()->set_end_time(clock+1);
+            if(clock==0)
+            {
+              executing.push_back(*waiting.begin());
+              iExecuting++;
+            }
+
+           else if(waiting.begin()->get_name()!=iExecuting->get_name())
+            {
+            waiting.begin()->set_beginning(clock);
+            executing.push_back(*waiting.begin());
+            iExecuting++;
+            }
+            else
+            {
+              *iExecuting=*waiting.begin();
+            }
+
+            if(waiting.begin()->get_remaining_time()==0)
+                  waiting.erase(waiting.begin());
+        }
+        clock++;
+    }
+}
+
+

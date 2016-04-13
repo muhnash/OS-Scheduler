@@ -24,7 +24,7 @@ void Process::set_priority(int prior)
 
 void Process::set_end_time(int t)
 {
-    end_time=t;
+    Process::finish=t;
 }
 void Process::set_remaining_time()
 {
@@ -76,7 +76,7 @@ int Process::get_finish()
 
 int Process::get_end_time()
 {
-    return end_time;
+    return Process::finish;
 }
 int Process::get_remaining_time()
 {

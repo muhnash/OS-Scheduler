@@ -2,40 +2,18 @@
 #include<string>
 #include<list>
 #include<algorithm>
+#include <cstdio>
+#include <iomanip>
 #include"Process.h"
 #include"S_Algorithms.h"
-#include "gtest\gtest.h"
-#include <cstdio>
+#include "Q_operations.h"
+
 using namespace std;
-
-void print_list(list<Process> x)
-{
-	list<Process>::iterator iter;
-	for (iter = x.begin(); iter != x.end(); iter++)
-	{
-		int x = iter->get_arrival();
-		int y = iter->get_beginning();
-		int waiting = y - x;
-		cout << iter->get_name() << "   " << iter->get_beginning() << "   " << iter->get_finish() <<"		"<< iter->get_burst() << "   " << waiting << endl;
-
-	}
-
-}
-
-/*
-
-TEST(Process,)
-{
-
-}
-*/
-
 
 int main()
 {
 	//freopen("input.txt", "r", stdin);
 	//freopen("output.txt", "w", stdout);
-
 
 	list <Process> runqueue;
 	list <Process> ::iterator it;
@@ -46,8 +24,8 @@ int main()
 	bool valid=true;
 	cout << "-> Enter Number of Processes: " << endl;
 	cin >> process_num;
-	
-	//TODO : handle invalid input values for process_num 
+
+	//TODO : handle invalid input values for process_num
 
 	cout << endl;
 	cout <<"-> Choose a scheduling algorithm from the following:"<< endl;
@@ -60,7 +38,7 @@ int main()
 	cout <<"-> Enter your choice number: " ;
 	cin >> choice;
 	//TODO : handle invalid input values for choice
-	
+
 	cout << endl;
 
 	int quant;
@@ -94,22 +72,18 @@ int main()
 			cout << "-------------" << endl;
 			cout << "Quantum: ";
 			cin >> quant;
-			
+
 		}
 		runqueue.push_back(temp);
 	}
 
 	runqueue.sort(isEarlier);
 
-	// NOW all processes are stored in the list named "runqueue"  , sorted by arrival time 
-	
-
-	cout << "BEFORE ..."<< endl;
-	print_list(runqueue);
+	// NOW all processes are stored in the list named "runqueue"  , sorted by arrival time
 
 	list<Process> output;
-	
-	
+
+
 	switch (choice)
 	{
 		case 1 :
@@ -123,7 +97,7 @@ int main()
 			//Shortest_Job_First_Non_Preemptive(runqueue, output);
 			break;
 		}
-		case 3 : 
+		case 3 :
 		{
 			Shortest_Job_First_Preemptive(runqueue, output);
 			break;
@@ -145,18 +119,20 @@ int main()
 		}
 
 	default:
+	    {
+	        cout<< "INVALID CHOICE!"<<endl;
 		break;
+	    }
 	}
 
-	
-
-
-	//printing all list elements 
-	
 	cout <<"==================={ OUTPUT }================="<<endl;
-	print_list(output);
 
-
+	cout << endl;
+	cout << "Gantt chart :" << endl;
+	gantt(output);
+	cout << endl << "Average Waiting time = " <<calc_waiting(output)<< endl;
+    cout << endl << "Turn Around time = "<<Turn_Around_Time(output)<<endl;
+	cout << endl;
 	system("pause");
 	return 0;
 }
