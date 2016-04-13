@@ -63,17 +63,17 @@ void gantt(list<Process> x)
 	cout << setfill(' ');
 	for (it = x.begin();it != x.end();it++)
 	{
-		cout <<setw(3)<< "|" << setw(it->get_burst() + 2) << it->get_name() <<setw(3)<< "|"<<" ";
+		cout << setw(3) << "|" << setw(it->get_burst() + 2) << it->get_name() << setw(3) << " ";
 
 	}
 
-	cout << endl;
+	cout << "|" << endl;
 	for (it = x.begin();it != x.end();it++)
 	{
-		cout << setw(3) << it->get_beginning() << setw(it->get_burst() + 2) <<"" << setw(3) << it->get_finish()<<" ";
+		cout << setw(3) << it->get_beginning() << setw(it->get_burst() + 2) << "" << setw(3) << " ";
 
 	}
-	cout << endl;
+	cout << x.back().get_finish() << endl;
 	//cout << setfill('-') << setw(1.5*len) << "-" << endl;
 	cout << setfill(' ');
 }
